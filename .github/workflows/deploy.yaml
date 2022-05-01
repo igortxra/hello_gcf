@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+env: 
+  function_name: hello
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -18,8 +21,9 @@ jobs:
         name: deploy cloud function
         uses: 'google-github-actions/deploy-cloud-functions@v0'
         with:
-          name: 'hello'
+          name: ${{ env.function_name }}
           runtime: 'python39'
           service_account_email: functions@macro-gadget-348914.iam.gserviceaccount.com
+          source_dir: ${{ env.function_name }}
       - name: 'call deployed function'
         run: 'curl "${{ steps.deploy.outputs.url }}"'
