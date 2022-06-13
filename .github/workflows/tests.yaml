@@ -1,0 +1,42 @@
+name: Tests
+
+on: [pull_request, workflow_dispatch]
+
+env:
+    FUNCTION_NAME: hello
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Setup Python
+              uses: actions/setup-python@v2
+              with:
+                python-version: 3.9
+            - name: Install dependencies
+              run: |
+               pip install -r requirements-dev.txt
+               pip install -r $FUNCTION_NAME/requirements.txt
+            - name: Test
+              run: |
+               coverage run -m pytest -v $FUNCTION_NAME/main_test.py
+               coverage report $FUNCTION_NAME/main.py
+            - name: Create commit comment
+              uses: peter-evans/commit-comment@v2
+              with:
+                body: |
+                  This is a multi-line test comment
+                  - With GitHub **Markdown** :sparkles:
+            - name: Test run
+              run: |
+                coverage run -m pytest -v
+            - id: coverage-table
+              uses: igortxra/pytest-coverage-action@main
+            - name: Create commit message with coverage table
+              uses: peter-evans/commit-comment@v1
+              with:
+                body: ${{ steps.coverage-table.outputs.report }}
+            
+                    
