@@ -23,3 +23,11 @@ jobs:
               run: |
                coverage run -m pytest -v $FUNCTION_NAME/main_test.py
                coverage report $FUNCTION_NAME/main.py
+            - name: Create commit comment
+              uses: peter-evans/commit-comment@v2
+              with:
+                body: |
+                  This is a multi-line test comment
+                  - With GitHub **Markdown** :sparkles:
+  
+                
