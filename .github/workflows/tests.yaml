@@ -17,9 +17,9 @@ jobs:
                 python-version: 3.9
             - name: Install dependencies
               run: |
-               pip install - r requirements-dev.txt
-               pip install - r $FUNCTION_NAME/requirements.txt
+               pip install -r requirements-dev.txt
+               pip install -r $FUNCTION_NAME/requirements.txt
             - name: Test
               run: |
-               coverage run - m pytest - v $FUNCTION_NAME/main_test.py
-               coverage report $FUNCTION_NAME/pkg/main.py
+               coverage run -m pytest -v $FUNCTION_NAME/main_test.py
+               coverage report $FUNCTION_NAME/main.py
